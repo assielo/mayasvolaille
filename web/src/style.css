@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mayas-green: #28A745;
+  --color-mayas-green-dark: #1E7E34;
+  --color-mayas-yellow: #FFC107;
+  --color-mayas-orange: #FF8500;
+  --color-mayas-dark: #333333;
+}

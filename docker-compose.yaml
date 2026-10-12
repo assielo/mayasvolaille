@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL / MySQL
+  db:
+    image: postgres:15-alpine
+    container_name: mayas_db
+    restart: always
+    environment:
+      POSTGRES_USER: mayas_user
+      POSTGRES_PASSWORD: secure_password_mayas
+      POSTGRES_DB: avicgestion_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mayas-net
+
+  # Application Principale (AvicGestion Pro)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mayas_app
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=avicgestion_db
+      - DB_USER=mayas_user
+      - DB_PASSWORD=secure_password_mayas
+    depends_on:
+      - db
+    networks:
+      - mayas-net
+
+volumes:
+  pgdata:
+
+networks:
+  mayas-net:
+    driver: bridge
